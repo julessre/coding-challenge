@@ -30,4 +30,11 @@
     border-radius: 0.3rem;
     font-size: 1rem;
     justify-content: center;
+
+    &:hover {
+        border: 2px solid #97cee2;
+        color: black;
+        background-color: white;
+        cursor: pointer;
+    }
 }

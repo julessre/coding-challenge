@@ -1,12 +1,13 @@
 // see https://bewerber-test.bitperfect-software.com/docs for the API Swagger documentation
 
-import { BACKEND_TOKEN, BACKEND_URL } from "../config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { BACKEND_TOKEN, BACKEND_URL } from "../config";
 
 export type Board = {
     id: string;
     name: string;
+    tasks: TaskOut[];
 };
 
 export type TaskOut = {
@@ -62,9 +63,42 @@ export const useAddTask = () => {
     const queryClient = useQueryClient();
 
     return useMutation<TaskOut, unknown, { boardId: string; task: TaskInput }>({
-        mutationKey: [],
+        mutationKey: [addTask],
         mutationFn: async ({ boardId, task }) => {
             const response = await addTask(boardId, task);
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                throw Error;
+            }
+        },
+        onSuccess: async () => {
+            // TODO: invalidate query keys to refresh tasks
+            await queryClient.invalidateQueries({ queryKey: [] });
+        },
+    });
+};
+
+export const getTask = (boardId: string, task: TaskOut) => {
+    const url = `${BACKEND_URL}/api/v1/boards/${boardId}/tasks`;
+    return axios.request({
+        url: url,
+        headers: {},
+        params: {
+            name: task.name,
+            status: task.status ?? undefined,
+        },
+        method: "GET",
+    });
+};
+
+export const useGetTask = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<TaskOut, unknown, { boardId: string; task: TaskOut }>({
+        mutationKey: [],
+        mutationFn: async ({ boardId, task }) => {
+            const response = await getTask(boardId, task);
             if (response.status === 200) {
                 return response.data;
             } else {
