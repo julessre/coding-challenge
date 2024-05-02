@@ -1,16 +1,14 @@
 import "./main-page.scss";
 import { useState } from "react";
-import { useAddTask, useGetBoard, useGetTask } from "../../api/useApi";
+import { useAddTask, useGetBoard, useGetTasks } from "../../api/useApi";
 import { Loader } from "../../components/Loader";
 
 export const MainPage = () => {
     const boardQuery = useGetBoard();
     const addTask = useAddTask();
-    const taskQuery = useGetTask();
-
     const boards = boardQuery.isSuccess ? boardQuery.data : [];
-    const tasks = taskQuery.isSuccess ? taskQuery.data : [];
     const [newTask, setNewTask] = useState("");
+    const tasksQuery = useGetTasks(boards[2]?.id); // Use the first board ID initially
 
     async function handleAddTask(boardId: string) {
         try {
@@ -18,10 +16,10 @@ export const MainPage = () => {
                 boardId: boardId,
                 task: {
                     name: newTask,
+                    status: "todo",
                 },
             });
             console.log(response);
-            // Optionally, you can reset the input field after successful task addition
             setNewTask("");
         } catch (error) {
             console.error("Error adding task:", error);
@@ -33,7 +31,30 @@ export const MainPage = () => {
             <h2>Main Page</h2>
             {boardQuery.isLoading ? <Loader /> : null}
             <div className={"boardView"}>
-                {boards.map((board) => {
+                {boards.map((board) => (
+                    <div key={board.id} className={"block"}>
+                        <h3>{board.name}</h3>
+                        <input
+                            type="text"
+                            value={newTask}
+                            onChange={(e) => setNewTask(e.target.value)}
+                            placeholder="Enter task name"
+                        />
+                        <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
+                            Add Task
+                        </button>
+                        {tasksQuery.isSuccess && (
+                            <ul>
+                                {tasksQuery.data?.items?.map((task) => (
+                                    <li key={task.id}>
+                                        {task.name} - {task.status}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                ))}
+                {/* {boards.map((board) => {
                     return (
                         <div key={board.id} className={"block"}>
                             <h3>{board.name}</h3>
@@ -46,14 +67,10 @@ export const MainPage = () => {
                             <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
                                 Add Task
                             </button>
-                            <ul>
-                                {tasks.map((task) => (
-                                    <li key={task.id}>{task.name}</li>
-                                ))}
-                            </ul>
+                            {task?.map((task) => <Task key={task.id} task={task} />)}
                         </div>
                     );
-                })}
+                })} */}
             </div>
         </div>
     );

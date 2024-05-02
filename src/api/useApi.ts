@@ -54,6 +54,7 @@ const addTask = (boardId: string, task: TaskInput) => {
         params: {
             name: task.name,
             status: task.status ?? undefined,
+            body: JSON.stringify(task),
         },
         method: "POST",
     });
@@ -92,22 +93,14 @@ export const getTask = (boardId: string, task: TaskOut) => {
     });
 };
 
-export const useGetTask = () => {
-    const queryClient = useQueryClient();
+export const useGetTasks = (boardId: string) => {
+    const url = `${BACKEND_URL}/api/v1/boards/${boardId}/tasks`;
 
-    return useMutation<TaskOut, unknown, { boardId: string; task: TaskOut }>({
-        mutationKey: [],
-        mutationFn: async ({ boardId, task }) => {
-            const response = await getTask(boardId, task);
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                throw Error;
-            }
-        },
-        onSuccess: async () => {
-            // TODO: invalidate query keys to refresh tasks
-            await queryClient.invalidateQueries({ queryKey: [] });
+    return useQuery<TaskOut[]>({
+        queryKey: ["tasks", boardId],
+        queryFn: async () => {
+            const response = await axios.get<TaskOut[]>(url);
+            return response.data;
         },
     });
 };
