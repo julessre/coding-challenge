@@ -1,2 +1,33 @@
-.main-page {
+.mainPage {
+    padding: 40px;
+}
+
+.boardView {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: sans-serif;
+    background-color: #efe6d5;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.block {
+    padding: 0.6rem;
+    width: 30.5%;
+    min-width: 14rem;
+    min-height: 4.5rem;
+    border-radius: 0.3rem;
+}
+
+.buttonAddTask {
+    display: flex;
+    background-color: white;
+    border-radius: 0.2rem;
+    width: 100%;
+    border: 0.1rem solid #e73213;
+    padding: 0.5rem 2.7rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    justify-content: center;
 }
