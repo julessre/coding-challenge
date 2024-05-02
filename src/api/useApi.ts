@@ -109,14 +109,13 @@ export const deleteTask = (taskId: string) => {
     return axios.delete(`${BACKEND_URL}/api/v1/tasks/${taskId}`);
 };
 
-// export const useDeleteTasks = (taskId: string) => {
-//     const url = `${BACKEND_URL}/api/v1/tasks/${taskId}`;
-
-//     return useQuery<TaskOut[]>({
-//         queryKey: ["tasks", taskId],
-//         queryFn: async () => {
-//             const response = await axios.delete<TaskOut[]>(url);
-//             return response.data;
-//         },
-//     });
-// };
+export const updateTaskStatus = async (taskId: string, newStatus: string) => {
+    const url = `${BACKEND_URL}/api/v1/tasks/${taskId}`;
+    try {
+        const response = await axios.put(url, {}, { params: { status: newStatus } });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to update task status");
+    }
+};

@@ -1,8 +1,6 @@
 import "./main-page.scss";
-import axios from "axios";
-import { BACKEND_URL } from "config";
 import { useState } from "react";
-import { deleteTask, useAddTask, useGetBoard, useGetTasks } from "../../api/useApi";
+import { deleteTask, updateTaskStatus, useAddTask, useGetBoard, useGetTasks } from "../../api/useApi";
 import { Loader } from "../../components/Loader";
 
 export const MainPage = () => {
@@ -11,7 +9,7 @@ export const MainPage = () => {
     const boards = boardQuery.isSuccess ? boardQuery.data : [];
     const [newTask, setNewTask] = useState("");
     const [status, setStatus] = useState("todo");
-    const tasksQuery = useGetTasks(boards[1]?.id); // Use the first board ID initially
+    const tasksQuery = useGetTasks(boards[1]?.id);
 
     async function handleAddTask(boardId: string) {
         try {
@@ -29,6 +27,15 @@ export const MainPage = () => {
         }
     }
 
+    const handleChangeTaskStatus = async (taskId: string, newStatus: string) => {
+        try {
+            const updatedTask = await updateTaskStatus(taskId, newStatus);
+            console.log("Task status updated:", updatedTask);
+        } catch (error) {
+            console.error("Error updating task status:", error);
+        }
+    };
+
     return (
         <div className={"mainPage"}>
             <h2>Main Page</h2>
@@ -39,26 +46,22 @@ export const MainPage = () => {
                         <div key={boards[1].id} className={"block"}>
                             <h3>{boards[1].name}</h3>
                             <div className={"createTask"}>
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={newTask}
-                                        onChange={(e) => setNewTask(e.target.value)}
-                                        placeholder="Enter task name"
-                                        className={"inputField"}
-                                    />
-                                </div>
-                                <div>
-                                    <select
-                                        value={status}
-                                        onChange={(e) => setStatus(e.target.value)}
-                                        className={"taskStatus"}
-                                    >
-                                        <option value="todo">Todo</option>
-                                        <option value="in progress">In Progress</option>
-                                        <option value="done">Done</option>
-                                    </select>
-                                </div>
+                                <input
+                                    type="text"
+                                    value={newTask}
+                                    onChange={(e) => setNewTask(e.target.value)}
+                                    placeholder="Enter task name"
+                                    className={"inputField"}
+                                />
+                                <select
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                    className={"taskStatus"}
+                                >
+                                    <option value="to do">Todo</option>
+                                    <option value="in Progress">In Progress</option>
+                                    <option value="done">Done</option>
+                                </select>
                             </div>
                             <button className={"buttonAddTask"} onClick={() => handleAddTask(boards[1].id)}>
                                 Add Task
@@ -70,18 +73,47 @@ export const MainPage = () => {
                                             <li key={task.id} className={"singleTasks"}>
                                                 <div>{task.name}</div>
                                                 <div className={`status ${task.status}`}>{task.status}</div>
-                                                <button
-                                                    type="button"
-                                                    className={"removeButton"}
-                                                    onClick={() => {
-                                                        deleteTask(task.id).catch((error) => {
-                                                            console.log(error);
-                                                        });
-                                                        tasksQuery.refetch();
-                                                    }}
-                                                >
-                                                    Remove
-                                                </button>
+                                                <div>
+                                                    <button
+                                                        type="button"
+                                                        className={"changeStatusButton"}
+                                                        onClick={() => {
+                                                            handleChangeTaskStatus(task.id, "in progress").catch(
+                                                                (error) => {
+                                                                    console.log(error);
+                                                                },
+                                                            );
+                                                            tasksQuery.refetch();
+                                                        }}
+                                                    >
+                                                        Start Task
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={"changeStatusButton"}
+                                                        onClick={() => {
+                                                            handleChangeTaskStatus(task.id, "done").catch((error) => {
+                                                                console.log(error);
+                                                            });
+                                                            tasksQuery.refetch();
+                                                        }}
+                                                    >
+                                                        Complete Task
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        className={"removeButton"}
+                                                        onClick={() => {
+                                                            deleteTask(task.id).catch((error) => {
+                                                                console.log(error);
+                                                            });
+                                                            tasksQuery.refetch();
+                                                        }}
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
                                             </li>
                                         ))}
                                     </ul>
@@ -123,23 +155,7 @@ export const MainPage = () => {
 //                         )}
 //                     </div>
 //                 ))}
-//                 {/* {boards.map((board) => {
-//                     return (
-//                         <div key={board.id} className={"block"}>
-//                             <h3>{board.name}</h3>
-//                             <input
-//                                 type="text"
-//                                 value={newTask}
-//                                 onChange={(e) => setNewTask(e.target.value)}
-//                                 placeholder="Enter task name"
-//                             />
-//                             <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
-//                                 Add Task
-//                             </button>
-//                             {task?.map((task) => <Task key={task.id} task={task} />)}
-//                         </div>
-//                     );
-//                 })} */}
+//
 //             </div>
 //         </div>
 //     );
