@@ -23,7 +23,7 @@
 
 .buttonAddTask {
     display: flex;
-    background-color: white;
+    background-color: #e73213;
     border-radius: 0.2rem;
     width: 100%;
     border: 0.1rem solid #e73213;
@@ -31,6 +31,24 @@
     border-radius: 0.3rem;
     font-size: 1rem;
     justify-content: center;
+    color: white;
+    margin-top: 1.4rem;
+    margin-bottom: 2.5rem;
+
+    &:hover {
+        border: 2px solid #e73213;
+        color: black;
+        background-color: white;
+        cursor: pointer;
+    }
+}
+
+.removeButton {
+    background-color: #97cee2;
+    border: 2px solid white;
+    border-radius: 0.3rem;
+    padding: 0.2rem 1.7rem;
+    margin-top: 10px;
 
     &:hover {
         border: 2px solid #97cee2;
@@ -40,9 +58,9 @@
     }
 }
 
-.toDoList {
-    // background-color: white;
-}
+// .toDoList {
+//     // background-color: white;
+// }
 
 .singleTasks {
     padding: 20px;
@@ -53,4 +71,47 @@
     border-radius: 0.3rem;
     margin-top: 5px;
     margin-top: 5px;
+}
+
+.createTask {
+    background-color: white;
+    border-radius: 0.3rem;
+    padding: 0.2rem 1rem;
+}
+
+.inputField {
+    border-radius: 0.3rem;
+    background-color: white;
+    border: none;
+    padding: 0.2rem 1.7rem;
+    margin: 0.4rem 0;
+}
+
+input:focus {
+    outline: none;
+    border: none;
+}
+
+.taskStatus {
+    border-radius: 0.3rem;
+    background-color: white;
+    border: none;
+    padding: 0.2rem 1.5rem;
+    margin: 0.4rem 0;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+select:focus {
+    outline: none;
+    border: none;
+}
+
+.status.todo {
+    color: red;
+}
+
+.status.done {
+    color: green;
 }

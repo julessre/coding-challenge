@@ -1,6 +1,8 @@
 import "./main-page.scss";
+import axios from "axios";
+import { BACKEND_URL } from "config";
 import { useState } from "react";
-import { useAddTask, useGetBoard, useGetTasks } from "../../api/useApi";
+import { deleteTask, useAddTask, useGetBoard, useGetTasks } from "../../api/useApi";
 import { Loader } from "../../components/Loader";
 
 export const MainPage = () => {
@@ -36,30 +38,55 @@ export const MainPage = () => {
                     {boards[0] && (
                         <div key={boards[1].id} className={"block"}>
                             <h3>{boards[1].name}</h3>
-                            <input
-                                type="text"
-                                value={newTask}
-                                onChange={(e) => setNewTask(e.target.value)}
-                                placeholder="Enter task name"
-                            />
-                            <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                <option value="todo">Todo</option>
-                                <option value="in progress">In Progress</option>
-                                <option value="done">Done</option>
-                            </select>
+                            <div className={"createTask"}>
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={newTask}
+                                        onChange={(e) => setNewTask(e.target.value)}
+                                        placeholder="Enter task name"
+                                        className={"inputField"}
+                                    />
+                                </div>
+                                <div>
+                                    <select
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        className={"taskStatus"}
+                                    >
+                                        <option value="todo">Todo</option>
+                                        <option value="in progress">In Progress</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
+                            </div>
                             <button className={"buttonAddTask"} onClick={() => handleAddTask(boards[1].id)}>
                                 Add Task
                             </button>
-                            {tasksQuery.isSuccess && (
-                                <ul className={"toDoList"}>
-                                    {tasksQuery.data?.items?.map((task) => (
-                                        <li key={task.id} className={"singleTasks"}>
-                                            <div>{task.name}</div>
-                                            <div>{task.status}</div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
+                            <div>
+                                {tasksQuery.isSuccess && (
+                                    <ul className={"toDoList"}>
+                                        {tasksQuery.data?.items?.map((task) => (
+                                            <li key={task.id} className={"singleTasks"}>
+                                                <div>{task.name}</div>
+                                                <div className={`status ${task.status}`}>{task.status}</div>
+                                                <button
+                                                    type="button"
+                                                    className={"removeButton"}
+                                                    onClick={() => {
+                                                        deleteTask(task.id).catch((error) => {
+                                                            console.log(error);
+                                                        });
+                                                        tasksQuery.refetch();
+                                                    }}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>

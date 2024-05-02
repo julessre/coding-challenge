@@ -104,3 +104,19 @@ export const useGetTasks = (boardId: string) => {
         },
     });
 };
+
+export const deleteTask = (taskId: string) => {
+    return axios.delete(`${BACKEND_URL}/api/v1/tasks/${taskId}`);
+};
+
+// export const useDeleteTasks = (taskId: string) => {
+//     const url = `${BACKEND_URL}/api/v1/tasks/${taskId}`;
+
+//     return useQuery<TaskOut[]>({
+//         queryKey: ["tasks", taskId],
+//         queryFn: async () => {
+//             const response = await axios.delete<TaskOut[]>(url);
+//             return response.data;
+//         },
+//     });
+// };
