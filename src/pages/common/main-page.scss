@@ -7,14 +7,15 @@
     flex-direction: row;
     justify-content: space-between;
     font-family: sans-serif;
+    color: #0c0c0c;
     background-color: #efe6d5;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 0.3rem;
 }
 
 .block {
     padding: 0.6rem;
-    width: 30.5%;
+    // width: 30.5%;
     min-width: 14rem;
     min-height: 4.5rem;
     border-radius: 0.3rem;
@@ -37,4 +38,19 @@
         background-color: white;
         cursor: pointer;
     }
+}
+
+.toDoList {
+    // background-color: white;
+}
+
+.singleTasks {
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #97cee2;
+    background-color: white;
+    border-radius: 0.3rem;
+    margin-top: 5px;
+    margin-top: 5px;
 }

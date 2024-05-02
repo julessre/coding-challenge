@@ -8,7 +8,8 @@ export const MainPage = () => {
     const addTask = useAddTask();
     const boards = boardQuery.isSuccess ? boardQuery.data : [];
     const [newTask, setNewTask] = useState("");
-    const tasksQuery = useGetTasks(boards[2]?.id); // Use the first board ID initially
+    const [status, setStatus] = useState("todo");
+    const tasksQuery = useGetTasks(boards[1]?.id); // Use the first board ID initially
 
     async function handleAddTask(boardId: string) {
         try {
@@ -16,7 +17,7 @@ export const MainPage = () => {
                 boardId: boardId,
                 task: {
                     name: newTask,
-                    status: "todo",
+                    status: status,
                 },
             });
             console.log(response);
@@ -30,48 +31,89 @@ export const MainPage = () => {
         <div className={"mainPage"}>
             <h2>Main Page</h2>
             {boardQuery.isLoading ? <Loader /> : null}
-            <div className={"boardView"}>
-                {boards.map((board) => (
-                    <div key={board.id} className={"block"}>
-                        <h3>{board.name}</h3>
-                        <input
-                            type="text"
-                            value={newTask}
-                            onChange={(e) => setNewTask(e.target.value)}
-                            placeholder="Enter task name"
-                        />
-                        <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
-                            Add Task
-                        </button>
-                        {tasksQuery.isSuccess && (
-                            <ul>
-                                {tasksQuery.data?.items?.map((task) => (
-                                    <li key={task.id}>
-                                        {task.name} - {task.status}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                ))}
-                {/* {boards.map((board) => {
-                    return (
-                        <div key={board.id} className={"block"}>
-                            <h3>{board.name}</h3>
+            {boards.length > 0 && (
+                <div className={"boardView"}>
+                    {boards[0] && (
+                        <div key={boards[1].id} className={"block"}>
+                            <h3>{boards[1].name}</h3>
                             <input
                                 type="text"
                                 value={newTask}
                                 onChange={(e) => setNewTask(e.target.value)}
                                 placeholder="Enter task name"
                             />
-                            <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
+                            <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                                <option value="todo">Todo</option>
+                                <option value="in progress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+                            <button className={"buttonAddTask"} onClick={() => handleAddTask(boards[1].id)}>
                                 Add Task
                             </button>
-                            {task?.map((task) => <Task key={task.id} task={task} />)}
+                            {tasksQuery.isSuccess && (
+                                <ul className={"toDoList"}>
+                                    {tasksQuery.data?.items?.map((task) => (
+                                        <li key={task.id} className={"singleTasks"}>
+                                            <div>{task.name}</div>
+                                            <div>{task.status}</div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
-                    );
-                })} */}
-            </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
+
+//     return (
+//         <div className={"mainPage"}>
+//             <h2>Main Page</h2>
+//             {boardQuery.isLoading ? <Loader /> : null}
+//             <div className={"boardView"}>
+//                 {boards.map((board) => (
+//                     <div key={board.id} className={"block"}>
+//                         <h3>{board.name}</h3>
+//                         <input
+//                             type="text"
+//                             value={newTask}
+//                             onChange={(e) => setNewTask(e.target.value)}
+//                             placeholder="Enter task name"
+//                         />
+//                         <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
+//                             Add Task
+//                         </button>
+//                         {tasksQuery.isSuccess && board.id === 1 && (
+//                             <ul>
+//                                 {tasksQuery.data?.items?.map((task) => (
+//                                     <li key={task.id}>
+//                                         {task.name} - {task.status}
+//                                     </li>
+//                                 ))}
+//                             </ul>
+//                         )}
+//                     </div>
+//                 ))}
+//                 {/* {boards.map((board) => {
+//                     return (
+//                         <div key={board.id} className={"block"}>
+//                             <h3>{board.name}</h3>
+//                             <input
+//                                 type="text"
+//                                 value={newTask}
+//                                 onChange={(e) => setNewTask(e.target.value)}
+//                                 placeholder="Enter task name"
+//                             />
+//                             <button className={"buttonAddTask"} onClick={() => handleAddTask(board.id)}>
+//                                 Add Task
+//                             </button>
+//                             {task?.map((task) => <Task key={task.id} task={task} />)}
+//                         </div>
+//                     );
+//                 })} */}
+//             </div>
+//         </div>
+//     );
+// };
