@@ -1,0 +1,108 @@
+:root {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    background-color: #242424;
+    color: rgba(255, 255, 255, 0.87);
+    color-scheme: light dark;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-synthesis: none;
+}
+
+/* Remove default padding */
+ul,
+ol,
+button {
+    padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd,
+button {
+    margin: 0;
+}
+
+cite {
+    font-style: normal;
+}
+
+button {
+    border: none;
+}
+
+a,
+button {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+/* Set core body defaults */
+body {
+    display: flex;
+    place-items: center;
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+    list-style: none;
+}
+
+ul:not([class]),
+ol:not([class]) {
+    margin: 0;
+    padding-left: 25px;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

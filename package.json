@@ -1,0 +1,33 @@
+{
+    "name": "bewerber-task-board",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "start": "vite",
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "prettier": "@bitperfect-software/prettier-config",
+    "dependencies": {
+        "@tanstack/react-query": "^5.29.2",
+        "axios": "^1.6.8",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.4.5"
+    },
+    "devDependencies": {
+        "@bitperfect-software/prettier-config": "^2.0.1",
+        "@types/node": "^18.11.13",
+        "@types/react": "^18.2.55",
+        "@types/react-dom": "^18.2.19",
+        "@vitejs/plugin-react": "^4.2.1",
+        "postcss": "^8.4.38",
+        "prettier": "^3.2.5",
+        "prettier-plugin-css-order": "^2.1.2",
+        "sass": "^1.69.7",
+        "typescript": "^5.4.5",
+        "vite": "^5.2.9"
+    }
+}
