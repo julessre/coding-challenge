@@ -1,4 +1,4 @@
-# bitperfect - Bewerbungs Projekt
+# Coding Challenge
 
 [API Documentation](https://bewerber-test.bitperfect-software.com/docs)
 
